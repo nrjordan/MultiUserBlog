@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {{post.render() | safe}}
+  <br>
+  <div class="likes">
+  	<form method="post">
+  		<input type="submit" value="like" name="like">
+  	</form>
+  	{{ likeerror }}
+  	<br>
+    <br>
+  	liked by: 
+  	{% for user in post.liked_by %}
+  		{{ user }}
+  		<br>
+  	{% endfor %}
+  </div>
+  <div class="comments">
+  <a href="/blog/{{post.key().id()}}/comment">Leave a comment</a>
+  <br>
+  {{ commenterror }}
+  <br>
+  <br>
+  Comments:
+  </div>
+  {% for j in comment %}
+  <div class="post">
+  <div class="post-heading">
+    <div class="post-date">
+      Comment on {{j.created.strftime("%b %d, %Y")}} by {{j.created_by}}
+{#      {% if user == p.created_by %} #}
+      <a href="/blog/{{post.key().id()}}/{{j.key().id()}}/edit"> [edit]</a>
+      <a href="/blog/{{post.key().id()}}/{{j.key().id()}}/delete"> [delete]</a>
+{#      {% endif %} #}
+    </div>
+  </div>
+  {{ j.content }}
+  <br>
+  <br>
+  {% endfor %}
+{% endblock %}
